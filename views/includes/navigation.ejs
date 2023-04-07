@@ -1,0 +1,53 @@
+<nav>
+  <div class="nav">
+    <div class="search">
+      <div class="hamburger">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </div>
+      <div class="logo">
+        <a href="/blog"><img src="/images/Large.svg" alt="" /></a>
+      </div>
+      <input class="search-bar" type="text" placeholder="Search Blogs" />
+    </div>
+    <div class="auth-buttons">
+      <% if (!isAuthenticated) { %>
+
+      <a href="/auth/signup" class="btn cta-btn signup">Create Account</a>
+      <a href="/auth/login" class="btn login">Log In</a>
+      <% } else { %>
+      <div class="profile">
+        <% if(profilePicUrl) { %>
+        <img src="/<%= profilePicUrl %>" />
+        <% } else {%>
+        <img src="/images/profile_default.jpg" />
+        <% } %>
+
+        <div class="profile_items">
+          <div class="profileInfo">
+            <div class="name"><%= fullName %></div>
+            <div class="userHandle"><%= userhandle %></div>
+          </div>
+          <ul class="profile_items_list signOut">
+            <li class="profile_item">
+              <a href="/blog/new" class="btn signOut">Write A Post</a>
+            </li>
+            <li class="profile_item">
+              <form action="/auth/logout" method="post">
+                <button class="btn signOut" type="submit">SignOut</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <a href="/blog/new" class="btn cta-btn write-post">Write a Post</a>
+
+      <% } %>
+      <a href="/blog/new"
+        ><img class="write-logo" src="/images/write-a-post.png" alt=""
+      /></a>
+      <img class="search-logo" src="/images/search.png" alt="" />
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,90 @@
+<%- include("../includes/head.ejs") %>
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/blog.css" />
+</head>
+<body>
+    <div class="addPost">
+       <div class="newPostContent">
+        <div class="editPost">
+            <div class="navigation">
+                <div class="logo">
+                    <a href="/blog"><img src="/images/Large.svg" alt="" /></a>
+                </div>
+                <div class="postTag">
+                    Write a new post
+                </div>
+            </div>
+            <div class="addPostContent">
+
+                <form class= "postForm">
+                    <div class="postFormContent">
+                        <% if(errorDetails) { %>
+                            <div class="errors"><%= errorDetails[0].msg %></div>
+                          <% } %>
+                        <div class="formSection">
+                            <input type="button" name="ui-coverImgUrl" class="form-input ui-coverImgUrl" value="Add a Cover Image">
+                        </div>
+                        <label class="coverFileName" for="coverImgUrl">Select image</label>
+                        <div class="formSection">
+                            <textarea id="ui-title" class="form-input ui-title changeHeight" ui-title= "title" placeholder= "New Post title here.."><% if(editing == true){ %> <%=oldDetails.title.trim()%> <% } %></textarea>
+                        </div>
+                        <div class="formSection">
+                            <textarea id="ui-description" class="form-input ui-description changeHeight" name= "ui-description" placeholder= "Write your post content here.."><% if(editing == true){ %> <%=oldDetails.description.trim()%> <% } %></textarea>
+                        </div>
+                    </div>
+                    <input class="btn cta-btn postuiSubmitbtn" type="button" value="Publish">
+                    <% if(editing) { %>
+                        <input type="hidden" name="" class="isEditing" value="<%= editing %>">
+                        <input type="hidden" name="postId" value="<%= oldDetails._id %>" class="postId">
+                    <% } else { %>
+                        <input type="hidden" name="" class="isEditing" value="false">
+                    <% } %>
+                    <div class="postSettings">
+                        <img src="/images/settings.png" alt="">
+                    </div>
+                    <div class="postOptions">
+                        <h3>Post Options</h3>
+                        <div class="postOptionsContent">
+                            <h4>Series:</h4>
+                            <div class="seriesDescription">
+                                Will this post be part of a series? Give the series a unique name. (Series visible once it has multiple posts)
+                            </div>
+                            
+                            <input type="text" name="uiSeriesName" class="uiSeriesName" placeholder="Enter Series name"/>
+                            <label class="seriesSelectionLabel" for="seriesSelection">Existing Series: </label>
+                            <select class="seriesSelection" name="seriesSelection" id="seriesSelection">
+                                <option value="dots">..</option>
+                                <option value="none">none</option>
+                                <% userSeries.forEach(series => { %>
+                                    <option value="<%= series.name%>"><span class="seriesName"><%= series.name%></span></option>
+                                <% }) %>
+                              </select>
+                              <label class="publishTypeLabel" for="publishType">Publish to: </label>
+                              <select class="publishType" name="publishType" id="publishType">
+                                <option value="everyone">everyone</option>
+                                <option value="friends">only friends</option>
+                              </select>
+                              <input type="button" class="btn cta-btn submitSeries" value="Done">
+                        </div>
+                    </div>
+                </form>
+                <form class="myForm" action="" method="post" enctype="multipart/form-data">
+                    <label class="coverFileName" for="coverImgUrl">Select image</label>
+                    <input class="imageUrl" type="file" name="imageUrl" id="" style="visibility: hidden">
+                    <input type="hidden" name="title" class="title">
+                    <input type="hidden" name="description" class="description">
+                    <input type="hidden" name="seriesName" class="seriesName" value="dots">
+                    <input type="hidden" name="publish", class="publish" value="everyone">
+                </form>
+
+            </div>
+        </div>
+        <div class="sectionDescription">
+        </div>
+       </div>
+    </div>
+    
+    <script src="/js/marked/marked.js"></script>
+    <script src="/js/domPurify/purify.min.js"></script>
+    <script src="/js/blog.js"></script>
+<%- include("../includes/tail.ejs") %>

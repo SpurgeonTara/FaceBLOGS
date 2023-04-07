@@ -1,0 +1,28 @@
+<section class="pagination">
+  <% if (currentPage !== 1 && previousPage !== 1) { %> <% if(hasTypeOfFeed) { %>
+  <a href="?page=1&feed=<%=hasTypeOfFeed %>">1</a>
+  <% } else { %>
+  <a href="?page=1">1</a>
+  <% } %> <% } %> <% if (hasPreviousPage) { %> <% if(hasTypeOfFeed) { %>
+  <a href="?page=<%= previousPage %>&feed=<%= hasTypeOfFeed %>">
+    <%= previousPage %></a
+  >
+  <% } else { %>
+  <a href="?page=<%= previousPage %>"><%= previousPage %></a>
+  <% } %> <% } %> <% if(hasTypeOfFeed) { %>
+  <a href="?page=<%= currentPage %>&feed=<%= hasTypeOfFeed %>" class="active"
+    ><%= currentPage %></a
+  >
+  <% } else { %>
+  <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+  <% } %> <% if (hasNextPage) { %> <% if(hasTypeOfFeed) { %>
+  <a href="?page=<%= nextPage %>&feed=<%= hasTypeOfFeed %>"><%= nextPage %></a>
+  <% } else { %>
+  <a href="?page=<%= nextPage %>"><%= nextPage %></a>
+  <% } %> <% } %> <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+  <% if(hasTypeOfFeed) { %>
+  <a href="?page=<%= lastPage %>&feed=<%= hasTypeOfFeed %>"><%= lastPage %></a>
+  <% } else { %>
+  <a href="?page=<%= lastPage %>"><%= lastPage %></a>
+  <% } %> <% } %>
+</section>

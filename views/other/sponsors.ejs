@@ -1,0 +1,36 @@
+<%- include("../includes/head") %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+    <%- include("../includes/navigation") %>
+    <div class="container">
+        <div class="menuContainer">
+            <div class="menuContent">
+                <ul class = "menuList">
+                    <a href="/blog/"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+                    <% if (isAuthenticated) { %>
+                    <a href="#"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+                    <% } %>
+                    <a href="/blog/sponsors"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+                    <a href="/blog/about"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+                    <a href="/blog/contact"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+                </ul>
+            </div>
+            <div class="bannerCard">
+                <div class="banner">
+                    <img class="banner-logo" src="/images/Large.svg" />
+                    <div class="bannerContent">
+                        <h1 class="banner-heading">Welcome to FaceBLOGS</h1>
+                    
+                    <div class="banner-tag">
+                        <a href="../index.html">FaceBLOGS</a> Community is a community of
+                          596,603 amazing developers
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1>Sponsors</h1>
+    </div>
+<%- include("../includes/tail.ejs") %>

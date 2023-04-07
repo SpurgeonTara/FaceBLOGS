@@ -1,0 +1,30 @@
+<%- include("../includes/head.ejs") %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sideBarMenuContainer">
+        
+            <a href="/auth/login" class="btn loginBtn">Log In</a>
+            <a href="/blog" class="homeLink"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+            <% if (isAuthenticated) { %>
+                <a class="userReadingList"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+            <% } %>
+            <a class="sponsors"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+            <a class="about"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+            <a class="contact"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+        </div>
+        <div class="mainContainer">
+            <div class="mainContent">
+                <h1><%= header %></h1>
+                <% if(isAuthenticated) { %>
+                    click <a href="/blog">here</a> to go to HomePage!
+                <% } else { %>
+                    click <a href="/auth/login">here</a> to Login!
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+<%- include("../includes/tail.ejs") %>

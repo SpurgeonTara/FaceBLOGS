@@ -1,0 +1,81 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/auth.css">
+<link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+    <%- include("../includes/navigation.ejs") %>
+    <div class="container">
+      <div class="sideBarMenuContainer">
+        
+        <a href="/auth/login" class="btn loginBtn">Log In</a>
+        <a href="/blog" class="homeLink"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+        <% if (isAuthenticated) { %>
+            <a class="userReadingList"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+        <% } %>
+        <a class="sponsors"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+        <a class="about"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+        <a class="contact"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+    </div>
+      <div class="midContainer">
+        <form action="/auth/signup" method="post" enctype="multipart/form-data">
+              
+          <div class="formControl">
+            <h1 class="main-heading">Welcome to FaceBLOGS</h1>
+            <div class="join-tag">
+              <a href="../index.html">FaceBLOGS</a> Community is a community of
+                596,603 amazing developers
+            </div>
+            <% if(errorDetails) { %>
+              <div class="errors"><%= errorDetails[0].msg %></div>
+            <% } %>
+            <label for="userName">User Name <span class="required">*</span></label>
+            <input type="text" class="text-input userName" name="userName" id="userName" placeholder="Enter Your User Name" value="<% if(oldDetails) { %><%= oldDetails.userName %> <% }%>"  />
+            <p class="message">
+                Make Sure to Choose a Unique Username and it should be combo of lowercase letters and digits with no Spaces'. <span>Combinition of your first name and last name is preferable. eg: johndoe</span>'
+            </p>
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="text" class="text-input email" name="email" id="email" placeholder="Enter Your Email Address" value="<% if(oldDetails) { %><%= oldDetails.email %> <% }%>" />
+            <p class="message">
+                Make Sure domain is '<span>gmail.com, yahoo.com, outlook.com</span
+                >'
+              </p>
+            <label for="password">Password <span class="required">*</span></label>
+            <input type="password" class="text-input password" name="password" id="password" placeholder="Enter Your Password" value="<% if(oldDetails) { %><%= oldDetails.password %> <% }%>" />
+            <p class="message">
+                Make Sure Password is '<span
+                  >8-16 Charecters with Atleast one Capital letter, one Small
+                  letter, One of theses Special Character(@,$,_,#)</span
+                >'
+              </p>
+            <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+            <input type="password" class="text-input confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="Enter Your Password Again" value="<% if(oldDetails) { %><%= oldDetails.confirmPassword %> <% }%>" />
+            <p class="message">
+                Password and Confirm Password Should be the Same!
+              </p>
+            <label for="imageUrl">Image</label>
+            <input type="file" class="file-input imageUrl" name="imageUrl" id="imageUrl">
+            <label for="firstName">First Name <span class="required">*</span></label>
+            <input type="text" class="text-input firstName" name="firstName" id="firstName" placeholder="Enter Youe First Name" value="<% if(oldDetails) { %><%= oldDetails.firstName %> <% }%>"  />
+            <label for="lastName">Last Name <span class="required">*</span></label>
+            <input type="text" class="text-input lastName" name="lastName" id="lastName" placeholder="Enter Your Last Name" value="<% if(oldDetails) { %><%= oldDetails.lastName %> <% }%>"/>
+            <label for="occupation">Occupation <span class="required">*</span></label>
+            <input type="text" class="text-input occupation" name="occupation" id="occupation" placeholder="Enter Your occupation" value="<% if(oldDetails) { %><%= oldDetails.occupation %> <% }%>"/>
+            <p class="message">
+              If you are Student, Please Enter Your Highest Qualification
+            </p>
+            <input class="cta-btn create-account" type="submit" value="Create Account" />
+        </div>
+    </form>
+    <br />
+    <br />
+    <hr />
+    <div class="about-form">
+      ( <span class="required"><b>*</b></span> ) &nbsp; &nbsp; - &nbsp;
+      &nbsp; These Fields were required Fields
+    </div>
+      </div>
+    </div>
+</body>
+<script src="/js/index.js"></script>
+<%- include('../includes/tail.ejs') %>

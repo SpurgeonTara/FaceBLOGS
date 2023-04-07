@@ -1,0 +1,41 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+    <%- include("../includes/navigation.ejs") %>
+    <div class="container">
+        <div class="sideBarMenuContainer">
+        
+            <a href="/auth/login" class="btn loginBtn">Log In</a>
+            <a href="/blog" class="homeLink"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+            <% if (isAuthenticated) { %>
+                <a class="userReadingList"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+            <% } %>
+            <a class="sponsors"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+            <a class="about"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+            <a class="contact"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+        </div>
+        <div class="midContainer">
+            <form action="/auth/login" method="post" enctype="multipart/form-data">
+                <div class="formControl">
+                    <h1 class="main-heading">Welcome to FaceBLOGS</h1>
+                    <div class="join-tag">
+                    <a href="../index.html">FaceBLOGS</a> Community is a community of
+                        596,603 amazing developers
+                    </div>
+                    <% if(errorDetails) { %>
+                        <div class="errors"><%= errorDetails[0].msg %></div>
+                    <% } %>
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="text" class="text-input email" name="email" id="email" placeholder="Enter Your Email Address" value="<% if(oldDetails) { %><%= oldDetails.email %> <% }%>">
+                    
+                    <label for="password">Password <span class="required">*</span></label>
+                    <input type="password" class="text-input password" name="password" id="password" placeholder="Enter Your Password" value="<% if(oldDetails) { %><%= oldDetails.password %> <% }%>">
+                    <input class="cta-btn login-submit" type="submit" value="Log In" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+<%- include("../includes/tail.ejs") %> 

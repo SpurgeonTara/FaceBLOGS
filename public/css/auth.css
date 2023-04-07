@@ -1,0 +1,87 @@
+.join-tag,
+.main-heading,
+.about-form {
+  text-align: center;
+}
+
+.join-tag {
+  color: #474343;
+}
+
+.formControl label {
+  display: block;
+  font-weight: bolder;
+  margin-top: 1rem;
+}
+
+.formControl .text-input {
+  margin-top: 0.5rem;
+  width: 100%;
+  border: 1px solid #c1c8cc;
+  border-radius: 5px;
+  padding: 0.65rem;
+  background-color: #eef0f1;
+}
+
+.formControl .message {
+  font-size: 0.8rem;
+  color: #474343;
+  margin-top: 0.3rem;
+}
+
+.required {
+  color: tomato;
+}
+
+.about-form {
+  margin-top: 1rem;
+  color: #474343;
+}
+
+.img-input {
+  padding-top: 0.5rem;
+}
+
+.create-account,
+.login-submit {
+  /* display: inline-block; */
+  margin-top: 1rem;
+  width: 100%;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.errors {
+  margin: 1rem;
+  padding: 0.5rem;
+  width: 95%;
+  border: 1px solid tomato;
+  background-color: hsla(20, 100%, 50%, 0.3);
+  color: hsla(0, 100%, 50%, 1);
+}
+
+.midContainer {
+  background-color: #fff;
+  margin: 1rem auto 0;
+  width: 60%;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* CSS */
+  .midContainer {
+    width: 80%;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .midContainer {
+    width: 100%;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  /* CSS */
+  .midContainer {
+    width: 100%;
+  }
+}

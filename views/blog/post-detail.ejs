@@ -1,0 +1,267 @@
+<%- include("../includes/head.ejs") %>
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/blog.css" />
+</head>
+<body>
+    <%- include("../includes/navigation.ejs") %>
+    <div class="sideBarMenuContainer">
+        
+        <a href="/auth/login" class="btn loginBtn">Log In</a>
+        <a href="/blog" class="homeLink"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+        <% if (isAuthenticated) { %>
+            <a class="userReadingList-side"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+        <% } %>
+        <a class="sponsors-side"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+        <a class="about-side"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+        <a class="contact-side"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+    </div>
+    <div class="mainContainerSingle">
+        <input class="post-search-bar-click" type="text" placeholder="Search Blogs" />
+        <div class="mainSubContainer">
+            <div class="singlePostContainer">
+                <div class="postSocialLinksContainer">
+                    <div class="socialLink">
+                        <%if(isLiked) { %>
+                            <form action="/blog/removeLike/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="likeBtn"><img src="/images/liked.png" alt=""></button>
+                            </form>
+                        <% } else { %>
+                            <form action="/blog/addLike/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="likeBtn"><img src="/images/like.png" alt=""></button>
+                            </form>
+                        <% } %>
+                    </div>
+                    <div class="socialLink">
+                        <%if(isSaved) { %>
+                            <form action="/auth/savedList/remove/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="saveBtn"><img src="/images/saved.png" alt=""></button>
+                            </form>
+                        <% } else { %>
+                            <form action="/auth/savedList/save/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="saveBtn"><img src="/images/save.png" alt=""></button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="postLikeAndComment">
+                    <div class="postLikeAndCommentContainer">
+                        <%if(isLiked) { %>
+                            <form action="/blog/removeLike/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="likeBtn"><img src="/images/liked.png" alt=""></button>
+                            </form>
+                        <% } else { %>
+                            <form action="/blog/addLike/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="likeBtn"><img src="/images/like.png" alt=""></button>
+                            </form>
+                        <% } %>
+                    </div>
+                    <div class="postLikeAndCommentContainer">
+                        <%if(isSaved) { %>
+                            <form action="/auth/savedList/remove/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="saveBtn"><img src="/images/saved.png" alt=""></button>
+                            </form>
+                        <% } else { %>
+                            <form action="/auth/savedList/save/post/<%= postDetails._id %>" method="post">
+                                <button type="submit" class="saveBtn"><img src="/images/save.png" alt=""></button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="postContentContainer">
+                    <div class="postContainerContent">
+                        <% if(postDetails.coverImgUrl) { %>
+                            <div class="coverImg">
+                                <img src="/<%= postDetails.coverImgUrl %>" alt="cover_image">
+                            </div>
+                        <% } %>
+                        <div class="postMainContentContainer">
+                            <div class="postTitleContainer">
+                                <h1><%= postDetails.title %></h1>
+                            </div>
+                            <div class="creator postCreatorContent">
+                                <% if(postDetails.creator.imageUrl) { %>
+                                    <% console.log(postDetails.creator.imageUrl) %>
+                                    <div class="creator_badge"><img class="creator_img" src="/<%= postDetails.creator.imageUrl %>" alt="creator_profile_pic"></div>
+                                <% } else {%> 
+                                    <div class="creator_badge"><img class="creator_img" src="/images/profile_default.jpg" alt="creator_profile_pic"></div>
+                                <% } %> 
+                                <% const day = new Date(postDetails.createdAt).getDate()%>
+                                <% const month = new Date(postDetails.createdAt).toLocaleString('default', { month: 'long' })%>
+                                <% const year = new Date(postDetails.createdAt).getFullYear()%>
+                                
+                                <div class="creator_details">
+                                    <h5 class="creator_name"><%= postDetails.creator.firstName %> <%= postDetails.creator.lastName %></h5>
+                                    <div class="date_created"><%= month %> <%= day %>, <%= year %></div>
+                                    <% if(postDetails.creator._id.toString() === userId.toString()) {%>
+                                        <a class="singlePostEditPost" href="/blog/edit/post/<%= postDetails._id %>">Edit</a>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% if(seriesPosts.length > 0) { %>
+                                <%  if(seriesPosts.length <= 4) { %>
+                                    
+                                    <div class="seriesDetailsContainer">
+                                        <h3 class="seriesTitle">
+                                            <%= postDetails.series.name %> (<%= seriesPosts.length %> Posts Series)
+                                        </h3>
+                                        <% seriesPosts.forEach((seriesPost, i) => { %>
+                                            <% if(seriesPost.postId.toString() === postDetails._id.toString()) { %>
+                                                <a href="/blog/post/<%= seriesPost.postId.toString() %>" class="seriesName highlightedSeries"><span class="seriesNameId"><%= i+1 %></span> <%= seriesPost.title %></a>
+                                            <% } else { %>
+                                                <a href="/blog/post/<%= seriesPost.postId.toString() %>" class="seriesName"><span class="seriesNameId"><%= i+1 %></span> <%= seriesPost.title %></a>
+                                            <% } %>
+                                            
+                                        <% }) %>
+                                    </div>
+                                <% } else { %>
+                                    <div class="seriesDetailsContainer">
+                                        <h3 class="seriesTitle">
+                                            <%= postDetails.series.name %> (<%= seriesPosts.length %> Posts Series)
+                                        </h3>
+                                        <% if(seriesPosts[0].postId.toString() === postDetails._id.toString()) { %>
+                                            <a href="/blog/post/<%= seriesPosts[0].postId.toString() %>" class="firstSeriesPostName seriesName highlightedSeries"><span class="seriesNameId"><%= 1. %></span>. <%= seriesPosts[0].title %></a>
+                                        <% } else { %>
+                                            <a href="/blog/post/<%= seriesPosts[0].postId.toString() %>" class="firstSeriesPostName seriesName"><span class="seriesNameId"><%= 1. %></span> <%= seriesPosts[0].title %></a>
+                                        <% } %>
+                                        <% if(seriesPosts[1].postId.toString() === postDetails._id.toString()) { %>
+                                            <a href="/blog/post/<%= seriesPosts[1].postId.toString() %>" class="secondSeriesPostName seriesName highlightedSeries"><span class="seriesNameId"><%= 2. %></span> <%= seriesPosts[1].title %></a>
+                                        <% } else { %>
+                                            <a href="/blog/post/<%= seriesPosts[1].postId.toString() %>" class="secondSeriesPostName seriesName"><span class="seriesNameId"><%= 2. %></span> <%= seriesPosts[1].title %></a>
+                                        <% } %>
+                                        
+                                        <input type="button" class="moreSeries seriesName" value="... <%= seriesPosts.length - 3 %> more Items ">
+                                        <% for(i=2; i<seriesPosts.length-2; i++){ %>
+                                            <% if(seriesPosts[i].postId.toString() === postDetails._id.toString()) { %>
+                                                <a href="/blog/post/<%= seriesPosts[i].postId.toString() %>" class="seriesName seriesPostName seriesPost<%= i+1 %> highlightedSeries"><span class="seriesNameId"><%= i+1 %></span> <%= seriesPosts[i].title %></a>
+                                            <% } else { %>
+                                                <a href="/blog/post/<%= seriesPosts[i].postId.toString() %>" class="seriesName seriesPostName seriesPost<%= i+1 %>"><span class="seriesNameId"><%= i+1 %></span> <%= seriesPosts[i].title %></a>
+                                            <% } %>
+                                            
+                                        <% } %>
+                                        <% if(seriesPosts[seriesPosts.length-1].postId.toString() === postDetails._id.toString()) { %>
+                                            <a href= "/blog/post/<%= seriesPosts[seriesPosts.length-1].postId.toString() %>" class="lastSeriesPostName seriesName highlightedSeries"><span class="seriesNameId"><%= seriesPosts.length %></span> <%= seriesPosts[seriesPosts.length - 1].title %></a>
+                                        <% } else { %>
+                                            <a href= "/blog/post/<%= seriesPosts[seriesPosts.length-1].postId.toString() %>" class="lastSeriesPostName seriesName"><span class="seriesNameId lastSeriesNameId"><%= seriesPosts.length %></span> <%= seriesPosts[seriesPosts.length - 1].title %></a>
+                                        <% } %>
+                                        
+                                    </div>
+                                <% } %>
+                            <% } %>
+                            <div class="actualPostContentContainer">
+                                <%- postDetails.description %>
+                            </div>
+                            <div class="postCommentsContainer">
+                                <h2 class= "discussionsTag">Discussions (<%= commentsDetails.length %>)</h2>
+                                <% if(isAuthenticated && commentEditing.toString() === "false") { %>
+                                    <div class="createPostComment">
+                                        <div class="commentsProfileIcon">
+                                            <% if(profilePicUrl) { %>
+                                                <a href="#"><img src="/<%= profilePicUrl %>" alt=""></a>
+                                            <% } else { %>
+                                                <a href="#"><img src="/images/profile_default.jpg" alt=""></a>
+                                            <% } %>
+                                        </div>
+                                        <form action="/blog/post/<%= postDetails._id %>/comment" method="post" class="postCommentsForm" enctype="multipart/form-data">
+                                            <textarea name="comment" id="comment"></textarea>
+                                            <input type="submit" value="Submit" class="btn cta-btn postCommentsFormSubmit">
+                                        </form>
+                                    </div>
+                               <% } %>
+                                <div class="postCommentsList">
+                                   <div class="postCommentListContainer">
+                                    <% commentsDetails.forEach(comment => { %>
+                                        <div class="postCommentsListContent">
+                                            <% const dayComment = new Date(comment.createdAt).getDate()%>
+                                        <% const monthComment = new Date(comment.createdAt).toLocaleString('default', { month: 'long' })%>
+                                        <% const yearComment = new Date(comment.createdAt).getFullYear()%>
+                                        <div class="commentsProfileIcon">
+                                            <% if(comment.userId.imageUrl) { %>
+                                                <a href="#"><img src="/<%= comment.userId.imageUrl %>" alt=""></a>
+                                            <% } else { %>
+                                                <a href="#"><img src="/images/profile_default.jpg" alt="creator_pic"></a>
+                                            <% } %>
+                                        </div>
+                                        <% if(commentEditing.toString() === comment._id.toString()) { %>
+                                            <form action="/blog/edit/comment/<%= comment._id %>" method="post" class="postCommentsForm" enctype="multipart/form-data">
+                                                <textarea name="comment" id="comment"><%= comment.comment %></textarea>
+                                                <input type="submit" value="Edit Comment" class="btn cta-btn postCommentsFormSubmit">
+                                            </form>
+                                        <% } else { %>
+                                            <div class="postCommentContent">
+                                                <div class="postCommentsHtmlTags">
+                                                    <div class="postCommentTags">
+                                                        <h4><%= comment.userId.firstName %> <%= comment.userId.lastName %></h4>
+                                                        <div class="commentCreatedAt"><%= monthComment %> <%= dayComment %>, <%= yearComment %></div>
+                                                        
+                                                    </div>
+                                                    <div class="commentContent"><%= comment.comment %> </div>
+                                                </div>
+                                            </div>
+                                        
+                                            <% if(comment.userId._id.toString() === userId.toString()) { %>
+                                                <div class="commentSocialBtns">
+                                                    <a href="/blog/post/<%= postDetails._id %>?editComment=<%= comment._id %>">
+                                                        <input type="submit" value="Edit" class="editComment">
+                                                    </a>
+                                                    <form action="/blog/delete/comment/<%= comment._id %>" method="post" enctype="multipart/form-data">
+                                                        <input type="submit" value="Delete" class="deleteComment">
+                                                    </form>
+                                                </div>
+                                            <% } %>
+                                        <% } %>
+                                    </div>
+                                    
+                                    <% }) %>
+                                   </div>
+                                </div>
+        
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+                <div class="creatorDetailsContainer">
+                    <div class="creatorDetailsContent">
+                        <div class="postUserProfileIcon">
+                            <% if(postDetails.creator.imageUrl) { %>
+                                <a href="#"><img src="/<%= postDetails.creator.imageUrl %>" alt=""></a>
+                            <% } else { %>
+                                <a href="#"><img src="/images/profile_default.jpg" alt="creator_pic"></a>
+                            <% } %>
+                        </div>
+                        <div class="postUserProfileBanner"></div>
+                        <div class="postUserProfileContent">
+                            <h3 class="creator-name"><%= postDetails.creator.firstName %> <%= postDetails.creator.lastName %></h3>
+                            <% if(postDetails.creator.occupation) {%>
+                                Recently Became a <%= postDetails.creator.occupation %>
+                            <% } %>
+                            
+                            <% if(isAuthenticated && userId.toString() !== postDetails.creator._id.toString()) { %>
+                                <% if(following.toString() === "Unfollow") { %>
+                                    <form action= "/auth/unfollow/user/<%= postDetails.creator._id %>/post/<%= postDetails._id %>" method="post">
+                                        <input type="submit" value="<%= following %>" class="btn cta-btn postUserFollow">
+                                    </form>
+                                <% } else { %>
+                                    <form action="/auth/follow/user/<%= postDetails.creator._id %>/post/<%= postDetails._id %>" method="post">
+                                        <input type="submit" value="<%= following %>" class="btn cta-btn postUserFollow">
+                                    </form>
+                                <% } %>
+                            <% } %>
+        
+                            <div class="joinedOn">
+                                <% const dayJoined = new Date(postDetails.creator.createdAt).getDate()%>
+                                <% const monthJoined = new Date(postDetails.creator.createdAt).toLocaleString('default', { month: 'long' })%>
+                                <% const yearJoined = new Date(postDetails.creator.createdAt).getFullYear()%>
+                                <h3 class="postJoinedTag">Joined</h3>
+                                <div class="postJoinedDate">
+                                    <%= monthJoined %> <%= dayJoined %>, <%= yearJoined %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+    <script src="/js/post.js"></script>
+<%- include("../includes/tail.ejs") %>

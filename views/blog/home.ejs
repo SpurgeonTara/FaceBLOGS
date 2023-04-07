@@ -1,0 +1,130 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+    <%- include("../includes/navigation.ejs") %>
+    <div class="sideBarMenuContainer">
+        
+        <a href="/auth/login" class="btn loginBtn">Log In</a>
+        <a href="/blog" class="homeLink"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+        <% if (isAuthenticated) { %>
+            <a class="userReadingList-side"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+        <% } %>
+        <a class="sponsors-side"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+        <a class="about-side"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+        <a class="contact-side"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+    </div>
+    <div class="container">
+        <div class="menuContainer">
+            <div class="menuContent">
+                <ul class = "menuList">
+                    <a href="/blog"><li class="menuItem"><img src="/images/home.png" /> <span class= "menu-name">Home</span></li></a>
+                    <% if (isAuthenticated) { %>
+                    <a class="userReadingList"><li class="menuItem"><img src="/images/readingList.png" /> <span class= "menu-name">Reading List</span></li></a>
+                    <% } %>
+                    <a class="sponsors"><li class="menuItem"><img src="/images/sponsors.png" /> <span class= "menu-name">Sponsors</span></li></a>
+                    <a class="about"><li class="menuItem"><img src="/images/about.png" /> <span class= "menu-name">About</span></li></a>
+                    <a class="contact"><li class="menuItem"><img src="/images/contact.png" /> <span class= "menu-name">Contact Us</span></li></a>
+                </ul>
+            </div>
+            <div class="bannerCard">
+                <div class="banner">
+                    <img class="banner-logo" src="/images/Large.svg" />
+                    <div class="bannerContent">
+                        <h1 class="banner-heading">Welcome to FaceBLOGS</h1>
+                    
+                    <div class="banner-tag">
+                        <a href="../index.html">FaceBLOGS</a> Community is a community of
+                          596,603 amazing developers
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainContainer">
+            <input class="search-bar-click" type="text" placeholder="Search Blogs" />
+            <div class="mainSubContainer">
+                <div class="mainContainerLinks">
+                    <h2>Posts</h2>
+                    <div class="sortBy">
+                        <a class= "sortPosts feed" href="/blog">Feed</a>
+                        <a class= "sortPosts" href="/blog?feed=week">Week</a>
+                        <a class= "sortPosts" href="/blog?feed=month">month</a>
+                        <a class= "sortPosts" href="/blog?feed=year">Year</a>
+                    </div>
+                </div>
+                <% if(posts.length > 0) { %> 
+                    <% posts.forEach(post => { %>
+                        <% const day = new Date(post.createdAt).getDate()%>
+                        <% const month = new Date(post.createdAt).toLocaleString('default', { month: 'long' })%>
+                        <% const year = new Date(post.createdAt).getFullYear()%>
+                        <div class="mainContent">
+                            
+                            <% if(post.coverImgUrl) { %>
+                                <a href="#">
+                                    <img 
+                                        class="coverImg" 
+                                        src="<%= post.coverImgUrl %>" 
+                                        alt="post_cover_image"
+                                    />
+                                </a>
+                            <% } %>
+                            <div class="postContent">
+                                <div class="creator">
+                                    <% if(post.creator.imageUrl) { %>
+                                        <% console.log(post.creator.imageUrl) %>
+                                        <div class="creator_badge"><img class="creator_img" src="<%= post.creator.imageUrl %>" alt="creator_profile_pic"></div>
+                                    <% } else {%> 
+                                        <div class="creator_badge"><img class="creator_img" src="/images/profile_default.jpg" alt="creator_profile_pic"></div>
+                                    <% } %> 
+                                    
+                                    <div class="creator_details">
+                                        <h5 class="creator_name"><%= post.creator.firstName %> <%= post.creator.lastName %></h5>
+                                        <div class="date_created"><%= month %> <%= day %>, <%= year %></div>
+                                    </div>
+                                </div>
+                                <div class="postData">
+        
+                                    <a href="/blog/post/<%= post._id %>"><h1 class = "post_title"><%=post.title%></h1></a>
+                                    <div class="social-section">
+                                        <div class="likes">
+                                            <image src="/images/like.png" /> 
+                                        </div>
+                                        <a href=""><span class="reaction_tag"><%= post.likes.length %> reactions</span></a>
+                                        <div class="comments">
+                                            <image src="/images/comment.png" />
+                                        </div>
+                                        <a href="#"><span class="comment_tag"><%= post.comments.length %> comments</span></a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                    <%- include('../includes/pagination.ejs', {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage: hasNextPage, hasPreviousPage: hasPreviousPage}) %>
+
+                <% } else { %>
+                    <h1>No Posts Found.</h1>    
+               <% }%>
+                
+            </div>
+        </div>
+        <div class="storiesContainer">
+            <div class="storiesContent">
+                <div class="storyCover">
+                    <img class= "storyCoverImage" src="/images/featured.jpg" alt="">
+                </div>
+            </div>
+            <div class="storiesContent">
+                <h3 class="storiesHeader">Featured Stories(<%= featuredPosts.length %>)</h3>
+                <ul class="storyContent">
+                    <% featuredPosts.forEach(post => { %>
+                        <a class="featuredStory" href="/blog/post/<%= post._id %>"><%= post.title %></a>
+                   <% }) %>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+<%- include("../includes/tail.ejs") %>
